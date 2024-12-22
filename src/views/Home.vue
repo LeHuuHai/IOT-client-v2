@@ -104,7 +104,7 @@ const connectWebSocket = () => {
             stompClient.value.subscribe('/topic/alert', (message) => {
                 const alertData = JSON.parse(new TextDecoder().decode(message._binaryBody));
                 console.log('Alert received:', alertData);
-                showToast('warn', alertData.alert, `${alertData.time.replace("T", " ")} ${alert.deviceName}`);
+                showToast('warn', alertData.alert, `device: ${alertData.deviceName}`);
             });
         },
         onStompError: (error) => {
@@ -117,7 +117,8 @@ const connectWebSocket = () => {
 
 const setChartData = () => {
     const documentStyle = getComputedStyle(document.documentElement);
-    const labels = rawData.value.map(item => {
+    const sortedData = rawData.value.sort((a, b) => new Date(a.time) - new Date(b.time));
+    const labels = sortedData.map(item => {
         const date = new Date(item.time);
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -127,7 +128,7 @@ const setChartData = () => {
         return `${day}/${month} ${hours}:${minutes}`;
     });
 
-    const data = rawData.value.map(item => item.soilMoistureValue);
+    const data = sortedData.map(item => item.soilMoistureValue);
 
     return {
         labels,
