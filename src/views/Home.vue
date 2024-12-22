@@ -1,7 +1,6 @@
 <template>
     <div>
-        <Toast />
-        
+        <Toast />      
         <div class="max-w-[1440px] flex flex-col mx-auto">You have {{listDevices.length}} devices</div>
         <div class="max-w-[1440px] flex flex-col mx-auto">
             <div class="flex gap-4 mb-4 mt-8">
@@ -12,7 +11,6 @@
                 <label for="">Device: </label>
                 <Select v-model="device" :options="listDevices" optionLabel="name" placeholder="Select a Device"
                     class="w-full md:w-56" @update:modelValue="onDeviceSelect"/>
-
             </div>
             <div class="header">
                 <div class="information-box">
@@ -39,8 +37,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            
+            </div>           
             <!-- <div class="gap-x-4 flex items-center">
                 <label for="">Search:</label>
                 <DatePicker v-model="date" dateFormat="dd/mm/yy" />
@@ -107,7 +104,7 @@ const connectWebSocket = () => {
             stompClient.value.subscribe('/topic/alert', (message) => {
                 const alertData = JSON.parse(new TextDecoder().decode(message._binaryBody));
                 console.log('Alert received:', alertData);
-                showToast('warn', alertData.alert, alertData.time.replace("T", " "));
+                showToast('warn', alertData.alert, alertData.time.replace("T", " ") + " " + alert.deviceId);
             });
         },
         onStompError: (error) => {
