@@ -107,7 +107,7 @@ const connectWebSocket = () => {
             stompClient.value.subscribe('/topic/alert', (message) => {
                 const alertData = JSON.parse(new TextDecoder().decode(message._binaryBody));
                 console.log('Alert received:', alertData);
-                showToast('warn', alertData.alert, alertData.alert);
+                showToast('warn', alertData.alert, alertData.time.replace("T", " "));
             });
         },
         onStompError: (error) => {
